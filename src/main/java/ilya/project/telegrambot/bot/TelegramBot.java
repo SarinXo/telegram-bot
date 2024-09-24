@@ -2,11 +2,12 @@ package ilya.project.telegrambot.bot;
 
 import ilya.project.telegrambot.bot.commands.CommandsHandler;
 import ilya.project.telegrambot.bot.config.BotProperties;
+import ilya.project.telegrambot.bot.model.UserMessageDto;
+import ilya.project.telegrambot.bot.service.BotMessageAiService;
 import jakarta.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -17,17 +18,27 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @RequiredArgsConstructor
 public class TelegramBot extends TelegramLongPollingBot {
 
+    private final BotMessageAiService botMessageAiService;
     private final BotProperties botProperties;
     private final CommandsHandler commandsHandler;
 
     @Override
     public void onUpdateReceived(@Nonnull Update update) {
         log.debug("Start processing the message");
-        if (update.hasMessage() && update.getMessage().hasText()) {
+
+        if (update.hasMessage() && isCommand(update)) {
             commandsHandler.handleCommands(update, this);
         } else {
-            onUnknownCommand(update.getMessage().getChatId());
+            talkWithAi(update);
         }
+    }
+
+    private boolean isCommand(Update update) {
+        if(!update.getMessage().hasText()) {
+            return false;
+        }
+        String text = update.getMessage().getText();
+        return text.charAt(0) == '/';
     }
 
     private void onUnknownCommand(long chatId) {
@@ -36,6 +47,20 @@ public class TelegramBot extends TelegramLongPollingBot {
             msg.setChatId(chatId);
             msg.setText("I don't understand you");
             execute(msg);
+        } catch (TelegramApiException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void talkWithAi(Update update) {
+        try {
+            UserMessageDto dto = new UserMessageDto(
+                    update.getMessage().getChatId(),
+                    update.getMessage().getFrom().getUserName(),
+                    update.getMessage().getText()
+            );
+            SendMessage response = botMessageAiService.handleMessage(dto);
+            execute(response);
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
         }

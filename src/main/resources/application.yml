@@ -2,6 +2,16 @@ spring:
   application:
     name: telegram-bot
 
+  ai:
+    mistralai:
+      api-key: ${MISTRALAI_API_KEY}
+      chat:
+        options:
+          model: mistral-large-latest
+          maxTokens: 1000
+          temperature: 0.4
+
+
 bot:
   name: "ilya_simple_telegram_bot"
   token: ${BOT_TOKEN}
