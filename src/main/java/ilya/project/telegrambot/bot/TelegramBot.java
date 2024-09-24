@@ -1,10 +1,10 @@
-package ilya.project.telegrambot;
+package ilya.project.telegrambot.bot;
 
-import ilya.project.telegrambot.commands.CommandsHandler;
-import ilya.project.telegrambot.config.BotProperties;
+import ilya.project.telegrambot.bot.commands.CommandsHandler;
+import ilya.project.telegrambot.bot.config.BotProperties;
 import jakarta.annotation.Nonnull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -14,21 +14,15 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class TelegramBot extends TelegramLongPollingBot {
 
     private final BotProperties botProperties;
     private final CommandsHandler commandsHandler;
 
-    public TelegramBot(DefaultBotOptions options,
-                       @Lazy CommandsHandler commandsHandler,
-                       BotProperties botProperties) {
-        super(options, botProperties.getToken());
-        this.botProperties = botProperties;
-        this.commandsHandler = commandsHandler;
-    }
-
     @Override
     public void onUpdateReceived(@Nonnull Update update) {
+        log.debug("Start processing the message");
         if (update.hasMessage() && update.getMessage().hasText()) {
             commandsHandler.handleCommands(update, this);
         } else {

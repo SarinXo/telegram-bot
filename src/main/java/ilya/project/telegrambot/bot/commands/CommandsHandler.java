@@ -1,10 +1,7 @@
-package ilya.project.telegrambot.commands;
+package ilya.project.telegrambot.bot.commands;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.bots.AbsSender;
@@ -35,19 +32,22 @@ public class CommandsHandler {
         String command = messageText.split(" ")[0];
         long chatId = update.getMessage().getChatId();
 
-        var commandHandler = commands.get(command);
+        Command commandHandler = commands.get(command);
         if (commandHandler != null) {
             commandHandler.apply(update, sender);
         } else {
-            var msg = new SendMessage(String.valueOf(chatId), "This command doesn't supported");
-            try {
-                sender.execute(msg);
-            } catch (TelegramApiException e) {
-                log.error("Telegram doesn't support method message can't send in chat");
-                throw new RuntimeException(e);
-            }
+            onUnknownCommand(chatId, sender);
         }
+    }
 
+    private void onUnknownCommand(long chatId, AbsSender sender) {
+        var msg = new SendMessage(String.valueOf(chatId), "This command doesn't supported");
+        try {
+            sender.execute(msg);
+        } catch (TelegramApiException e) {
+            log.error("Telegram doesn't support method message can't send in chat");
+            throw new RuntimeException(e);
+        }
     }
 
 }

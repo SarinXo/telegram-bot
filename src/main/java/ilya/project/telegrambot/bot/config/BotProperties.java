@@ -1,4 +1,4 @@
-package ilya.project.telegrambot.config;
+package ilya.project.telegrambot.bot.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
