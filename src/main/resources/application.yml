@@ -1,3 +1,7 @@
 spring:
   application:
     name: telegram-bot
+
+bot:
+  name: "ilya_simple_telegram_bot"
+  token: ${BOT_TOKEN}
