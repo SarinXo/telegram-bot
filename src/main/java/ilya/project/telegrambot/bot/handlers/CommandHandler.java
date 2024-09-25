@@ -1,5 +1,8 @@
-package ilya.project.telegrambot.bot.commands;
+package ilya.project.telegrambot.bot.handlers;
 
+import ilya.project.telegrambot.bot.handlers.TelegramMessageHandler;
+import ilya.project.telegrambot.bot.handlers.commands.Command;
+import ilya.project.telegrambot.utils.TelegramRequestUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -14,11 +17,11 @@ import java.util.stream.Collectors;
 
 @Component
 @Slf4j
-public class CommandsHandler {
+public class CommandHandler implements TelegramMessageHandler {
 
     private final Map<String, Command> commands;
 
-    public CommandsHandler(Set<Command> commandSet) {
+    public CommandHandler(Set<Command> commandSet) {
         this.commands = commandSet.stream().collect(
                 Collectors.toMap(
                         Command::commandName,
@@ -27,7 +30,8 @@ public class CommandsHandler {
         );
     }
 
-    public void handleCommands(Update update, AbsSender sender) {
+    @Override
+    public void handle(Update update, AbsSender sender) {
         String messageText = update.getMessage().getText();
         String command = messageText.split(" ")[0];
         long chatId = update.getMessage().getChatId();
@@ -50,4 +54,13 @@ public class CommandsHandler {
         }
     }
 
+    @Override
+    public int priority() {
+        return 100;
+    }
+
+    @Override
+    public boolean canHandle(Update update) {
+        return TelegramRequestUtils.isCommand(update);
+    }
 }
