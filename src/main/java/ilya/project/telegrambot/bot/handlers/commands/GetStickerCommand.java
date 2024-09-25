@@ -1,4 +1,4 @@
-package ilya.project.telegrambot.bot.commands;
+package ilya.project.telegrambot.bot.handlers.commands;
 
 import ilya.project.telegrambot.utils.FileUtils;
 import lombok.RequiredArgsConstructor;
