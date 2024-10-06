@@ -2,12 +2,18 @@ package ilya.project.telegrambot.bot.handlers;
 
 import ilya.project.telegrambot.bot.model.UserMessageDto;
 import ilya.project.telegrambot.bot.service.BotMessageAiService;
+import ilya.project.telegrambot.utils.FileUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendSticker;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import java.util.Random;
+import java.util.random.RandomGenerator;
 
 @Component
 @RequiredArgsConstructor

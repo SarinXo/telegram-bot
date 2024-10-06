@@ -15,6 +15,7 @@ import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import java.util.HashMap;
 import java.util.Map;
 
+import static ilya.project.telegrambot.ai.prompts.MessageTemplates.RUS;
 import static ilya.project.telegrambot.ai.prompts.MessageTemplates.TALK_TEMPLATE;
 import static ilya.project.telegrambot.ai.prompts.MessageTemplates.USE_MARKDOWN;
 import static ilya.project.telegrambot.ai.prompts.PromptVariables.MESSAGE;
@@ -39,6 +40,14 @@ public class BotMessageAiService {
 
         String chatId = Long.toString(message.chatId());
         SendMessage response = new SendMessage(chatId, aiResponse);
+        response.enableMarkdown(true);
+        return response;
+    }
+
+    public SendMessage rusGen(Long chatId) {
+        String aiResponse = chatModel.call(RUS);
+        String stringChatId = Long.toString(chatId);
+        SendMessage response = new SendMessage(stringChatId, aiResponse);
         response.enableMarkdown(true);
         return response;
     }
