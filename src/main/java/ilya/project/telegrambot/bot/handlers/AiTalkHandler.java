@@ -39,22 +39,7 @@ public class AiTalkHandler implements TelegramMessageHandler{
                     update.getMessage().getFrom().getUserName(),
                     update.getMessage().getText()
             );
-            InputFile sticker;
-
-            int rand = Random.from(RandomGenerator.getDefault()).nextInt(0, 3);
-            switch(rand) {
-                case 0 -> sticker = FileUtils.getInputFile("rus_baical.png");
-                case 1 -> sticker = FileUtils.getInputFile("rus_drevniy.png");
-                case 2 -> sticker = FileUtils.getInputFile("rus_god.png");
-                default -> sticker = FileUtils.getInputFile("rus_baical.png");
-            }
-
-            SendSticker tgSticker = new SendSticker();
-            tgSticker.setChatId(String.valueOf(dto.chatId()));
-            tgSticker.setSticker(sticker);
-
             SendMessage response = botMessageAiService.handleMessage(dto);
-            sender.execute(tgSticker);
             sender.execute(response);
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
