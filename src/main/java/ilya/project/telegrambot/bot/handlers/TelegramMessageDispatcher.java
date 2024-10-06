@@ -1,11 +1,9 @@
 package ilya.project.telegrambot.bot.handlers;
 
-import ilya.project.telegrambot.bot.handlers.TelegramMessageHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -25,7 +23,7 @@ public class TelegramMessageDispatcher {
     }
 
     public void handleCommands(Update update, AbsSender sender) {
-        for(var handler : handlers) {
+        for (var handler : handlers) {
             if (handler.canHandle(update)) {
                 handler.handle(update, sender);
                 return;

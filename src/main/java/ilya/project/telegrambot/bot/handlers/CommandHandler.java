@@ -1,6 +1,5 @@
 package ilya.project.telegrambot.bot.handlers;
 
-import ilya.project.telegrambot.bot.handlers.TelegramMessageHandler;
 import ilya.project.telegrambot.bot.handlers.commands.Command;
 import ilya.project.telegrambot.utils.TelegramRequestUtils;
 import lombok.extern.slf4j.Slf4j;
