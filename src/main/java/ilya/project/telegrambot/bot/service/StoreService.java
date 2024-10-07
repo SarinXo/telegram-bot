@@ -15,19 +15,19 @@ import java.util.concurrent.ConcurrentHashMap;
 public class StoreService {
     public final static Map<Long, Map<Product, Integer>> cartMap = new ConcurrentHashMap<>();
     public final static Map<Long, Product> productsMap = new ConcurrentHashMap<>() {{
-        put(1L, new Product("Кепка", new BigDecimal(500), FileUtils.getInputFile("products/cap.png")));
-        put(2L, new Product("Фляжка", new BigDecimal(1600), FileUtils.getInputFile("products/flask.png")));
-        put(3L, new Product("Стельки", new BigDecimal(800), FileUtils.getInputFile("products/insoles.png")));
-        put(4L, new Product("Лапти", new BigDecimal(900), FileUtils.getInputFile("products/lapti.png")));
-        put(5L, new Product("Пестр", new BigDecimal(1200), FileUtils.getInputFile("products/pester.png")));
-        put(6L, new Product("Туесок", new BigDecimal(600), FileUtils.getInputFile("products/tuesok.png")));
+        put(1L, new Product("Кепка", "cap", new BigDecimal(500), FileUtils.getInputFile("products/cap.png")));
+        put(2L, new Product("Фляжка", "flask", new BigDecimal(1600), FileUtils.getInputFile("products/flask.png")));
+        put(3L, new Product("Стельки", "insoles", new BigDecimal(800), FileUtils.getInputFile("products/insoles.png")));
+        put(4L, new Product("Лапти", "lapti", new BigDecimal(900), FileUtils.getInputFile("products/lapti.png")));
+        put(5L, new Product("Пестр", "pester", new BigDecimal(1200), FileUtils.getInputFile("products/pester.png")));
+        put(6L, new Product("Туесок", "tuesok", new BigDecimal(600), FileUtils.getInputFile("products/tuesok.png")));
     }};
 
     public void addToCart(Long chatId, Long productId) {
         Product product = productsMap.get(productId);
-        var cart = Optional.of(cartMap.get(chatId))
+        var cart = Optional.ofNullable(cartMap.get(chatId))
                 .orElseGet(HashMap::new);
-        var count = Optional.of(cart.get(product))
+        var count = Optional.ofNullable(cart.get(product))
                 .orElse(0);
         cart.put(product, count + 1);
         cartMap.put(chatId, cart);

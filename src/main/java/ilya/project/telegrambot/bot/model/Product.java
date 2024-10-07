@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 
 public record Product(
         String title,
+        String engName,
         BigDecimal price,
         InputFile picture
 ) {

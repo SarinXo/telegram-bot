@@ -9,21 +9,20 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 
 @Component
 @RequiredArgsConstructor
-public class BuyLaptiCommand implements Command {
+public class BuyAllInCart implements Command {
 
     private final StoreService service;
 
     @Override
     public String commandName() {
-        return "/buy_lapti";
+        return "/buy";
     }
 
     @Override
     public void apply(Update update, AbsSender sender) {
         long chatId = update.getMessage().getChatId();
-        service.addToCart(chatId, 4L);
+        service.buy(chatId);
 
-        TelegramRequestUtils
-                .sendMessage(chatId, "Вы добавили лапти в заказ", sender);
+        TelegramRequestUtils.sendMessage(chatId, "Спасибо за заказ и хорошего дня!", sender);
     }
 }

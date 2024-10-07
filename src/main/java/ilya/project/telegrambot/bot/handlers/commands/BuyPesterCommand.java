@@ -10,6 +10,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 @Component
 @RequiredArgsConstructor
 public class BuyPesterCommand implements Command {
+
     private final StoreService service;
 
     @Override

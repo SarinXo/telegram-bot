@@ -22,7 +22,7 @@ public class TelegramRequestUtils {
     public static void sendMessage(String chatId, String msg, AbsSender sender) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
-        message.setText("Вы добавили туесок в заказ");
+        message.setText(msg);
 
         try {
             sender.execute(message);
