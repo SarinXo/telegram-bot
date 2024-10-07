@@ -32,7 +32,7 @@ public class GetStickerCommand implements Command {
         long chatId = update.getMessage().getChatId();
         int rand = Random.from(RandomGenerator.getDefault()).nextInt(0, 3);
         InputFile sticker;
-        switch(rand) {
+        switch (rand) {
             case 0 -> sticker = FileUtils.getInputFile("rus_baical.png");
             case 1 -> sticker = FileUtils.getInputFile("rus_drevniy.png");
             case 2 -> sticker = FileUtils.getInputFile("rus_god.png");

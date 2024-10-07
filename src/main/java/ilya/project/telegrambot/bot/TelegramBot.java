@@ -1,7 +1,7 @@
 package ilya.project.telegrambot.bot;
 
-import ilya.project.telegrambot.bot.handlers.TelegramMessageDispatcher;
 import ilya.project.telegrambot.bot.config.BotProperties;
+import ilya.project.telegrambot.bot.handlers.TelegramMessageDispatcher;
 import jakarta.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
